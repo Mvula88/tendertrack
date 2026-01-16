@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
-import { stripe, getPlanFromPriceId } from '@/lib/stripe'
+import { getPlanFromPriceId } from '@/lib/stripe'
+import { stripe } from '@/lib/stripe-server'
 import { createClient } from '@supabase/supabase-js'
 import Stripe from 'stripe'
 
