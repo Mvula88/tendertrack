@@ -227,6 +227,7 @@ export function CompetitorDialog({
                       className="resize-none"
                       rows={3}
                       {...field}
+                      value={field.value ?? ''}
                     />
                   </FormControl>
                   <FormMessage />

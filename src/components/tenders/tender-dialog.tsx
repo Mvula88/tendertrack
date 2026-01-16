@@ -54,7 +54,7 @@ const tenderFormSchema = z.object({
   description: z.string().optional(),
   organization_id: z.string().min(1, 'Organization is required'),
   category_id: z.string().optional(),
-  due_date: z.date({ required_error: 'Due date is required' }),
+  due_date: z.date({ message: 'Due date is required' }),
   document_url: z.string().optional().nullable(),
   status: z.enum([
     'identified',
@@ -262,6 +262,7 @@ export function TenderDialog({
                       className="resize-none"
                       rows={3}
                       {...field}
+                      value={field.value ?? ''}
                     />
                   </FormControl>
                   <FormMessage />

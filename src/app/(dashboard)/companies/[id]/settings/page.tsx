@@ -450,6 +450,7 @@ export default function CompanySettingsPage({
                           <Textarea
                             className="resize-none"
                             {...field}
+                            value={field.value ?? ''}
                             disabled={isSaving}
                           />
                         </FormControl>

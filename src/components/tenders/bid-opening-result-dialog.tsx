@@ -42,7 +42,7 @@ const bidItemSchema = z.object({
 })
 
 const bidOpeningFormSchema = z.object({
-  opening_date: z.date({ required_error: 'Opening date is required' }),
+  opening_date: z.date({ message: 'Opening date is required' }),
   our_bid_amount: z.number().min(0.01, 'Amount must be greater than 0'),
   lowest_bid_amount: z.number().min(0.01, 'Amount must be greater than 0'),
   is_lowest_bidder: z.boolean(),
@@ -339,6 +339,7 @@ export function BidOpeningResultDialog({
                       className="resize-none"
                       rows={3}
                       {...field}
+                      value={field.value ?? ''}
                     />
                   </FormControl>
                   <FormMessage />

@@ -249,6 +249,7 @@ export default function NewCompanyPage() {
                         placeholder="Company address (optional)"
                         className="resize-none"
                         {...field}
+                        value={field.value ?? ''}
                         disabled={isLoading}
                       />
                     </FormControl>
