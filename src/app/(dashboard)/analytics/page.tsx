@@ -475,7 +475,7 @@ export default function AnalyticsPage() {
                   tick={{ fontSize: 12 }}
                 />
                 <Tooltip
-                  formatter={(value: number) => formatCurrency(value)}
+                  formatter={(value: number | undefined) => value !== undefined ? formatCurrency(value) : ''}
                   labelFormatter={(label) => `Stage: ${label}`}
                 />
                 <Bar dataKey="value" fill="#a78bfa" radius={[4, 4, 0, 0]} />
