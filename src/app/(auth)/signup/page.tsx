@@ -78,7 +78,7 @@ export default function SignupPage() {
               alt="TrackTender"
               width={150}
               height={40}
-              className="h-10 w-auto"
+              className="h-10 w-auto dark:invert"
               priority
             />
           </div>
