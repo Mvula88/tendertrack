@@ -115,46 +115,20 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Product Preview Mockup */}
+        {/* Product Preview Section */}
         <section className="pb-24 md:pb-32 container relative z-10 -mt-12 md:-mt-20">
           <div className="relative group">
             <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent blur-[120px] rounded-full -z-10 opacity-50" />
-            <div className="relative mx-auto max-w-6xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm p-2 shadow-2xl animate-float">
+            <div className="relative mx-auto max-w-6xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm p-2 shadow-2xl animate-float overflow-hidden">
               <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 overflow-hidden shadow-sm">
-                {/* Mock Browser Header */}
-                <div className="h-12 border-b bg-slate-50 dark:bg-slate-900/50 flex items-center px-4 gap-2">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-800" />
-                    <div className="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-800" />
-                    <div className="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-800" />
-                  </div>
-                  <div className="mx-auto w-1/3 h-6 bg-slate-100 dark:bg-slate-800 rounded-md" />
-                </div>
-                {/* Mock Dashboard Content */}
-                <div className="p-4 md:p-8 space-y-6 bg-white dark:bg-slate-950">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="h-32 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 space-y-2">
-                      <div className="w-1/2 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
-                      <div className="w-2/3 h-8 bg-primary/20 rounded" />
-                    </div>
-                    <div className="h-32 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 space-y-2">
-                      <div className="w-1/2 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
-                      <div className="w-2/3 h-8 bg-blue-500/20 rounded" />
-                    </div>
-                    <div className="h-32 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 space-y-2">
-                      <div className="w-1/2 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
-                      <div className="w-2/3 h-8 bg-green-500/20 rounded" />
-                    </div>
-                  </div>
-                  <div className="h-64 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-6 flex items-end gap-3">
-                      <div className="flex-1 bg-slate-200 dark:bg-slate-800 rounded-t-lg h-[40%]" />
-                      <div className="flex-1 bg-primary/40 rounded-t-lg h-[70%]" />
-                      <div className="flex-1 bg-slate-200 dark:bg-slate-800 rounded-t-lg h-[50%]" />
-                      <div className="flex-1 bg-blue-500/40 rounded-t-lg h-[90%]" />
-                      <div className="flex-1 bg-slate-200 dark:bg-slate-800 rounded-t-lg h-[60%]" />
-                      <div className="flex-1 bg-green-500/40 rounded-t-lg h-[100%]" />
-                  </div>
-                </div>
+                <Image
+                  src="/dashboard.png"
+                  alt="TenderTrack Dashboard"
+                  width={1200}
+                  height={675}
+                  className="w-full h-auto object-cover"
+                  priority
+                />
               </div>
             </div>
           </div>
