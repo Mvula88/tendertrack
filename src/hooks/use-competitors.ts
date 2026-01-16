@@ -234,7 +234,7 @@ export function useCreateCompetitiveBid() {
 
       // Update competitor encounter count
       await supabase.rpc('increment_encounter_count', {
-        competitor_id: bid.competitor_id,
+        p_competitor_id: bid.competitor_id,
       })
 
       return data

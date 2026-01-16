@@ -515,7 +515,12 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_encounter_count: {
+        Args: {
+          p_competitor_id: string
+        }
+        Returns: void
+      }
     }
     Enums: {
       organization_type: OrganizationType
