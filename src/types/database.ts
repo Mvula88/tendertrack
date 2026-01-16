@@ -23,6 +23,10 @@ export type MemberRole = 'owner' | 'admin' | 'member' | 'viewer'
 
 export type ReminderType = 'deadline_7days' | 'deadline_3days' | 'deadline_1day' | 'check_bid_opening'
 
+export type SubscriptionPlan = 'free' | 'pro' | 'team'
+
+export type SubscriptionStatus = 'active' | 'canceled' | 'past_due' | 'trialing' | 'incomplete'
+
 export interface Database {
   public: {
     Tables: {
@@ -461,6 +465,51 @@ export interface Database {
           }
         ]
       }
+      subscriptions: {
+        Row: {
+          id: string
+          user_id: string
+          stripe_customer_id: string | null
+          stripe_subscription_id: string | null
+          stripe_price_id: string | null
+          plan: SubscriptionPlan
+          status: SubscriptionStatus
+          current_period_start: string | null
+          current_period_end: string | null
+          cancel_at_period_end: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          stripe_price_id?: string | null
+          plan?: SubscriptionPlan
+          status?: SubscriptionStatus
+          current_period_start?: string | null
+          current_period_end?: string | null
+          cancel_at_period_end?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          stripe_customer_id?: string | null
+          stripe_subscription_id?: string | null
+          stripe_price_id?: string | null
+          plan?: SubscriptionPlan
+          status?: SubscriptionStatus
+          current_period_start?: string | null
+          current_period_end?: string | null
+          cancel_at_period_end?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -514,6 +563,10 @@ export type ProcurementPlanInsert = Database['public']['Tables']['procurement_pl
 
 export type Reminder = Database['public']['Tables']['reminders']['Row']
 export type ReminderInsert = Database['public']['Tables']['reminders']['Insert']
+
+export type Subscription = Database['public']['Tables']['subscriptions']['Row']
+export type SubscriptionInsert = Database['public']['Tables']['subscriptions']['Insert']
+export type SubscriptionUpdate = Database['public']['Tables']['subscriptions']['Update']
 
 // Extended types with relations
 export type TenderWithRelations = Tender & {
