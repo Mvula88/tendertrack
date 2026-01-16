@@ -73,78 +73,48 @@ export default function LandingPage() {
       </header>
 
       <main className="relative">
-        {/* Hero Section */}
-        <section className="relative pt-20 pb-32 md:pt-32 md:pb-48 overflow-hidden">
+        {/* Hero Section - Restored from previous design */}
+        <section className="relative py-20 md:py-32 overflow-hidden">
           <div className="container relative z-10">
-            <div className="max-w-4xl mx-auto text-center space-y-8">
-              <Badge variant="outline" className="animate-fade-in py-1.5 px-4 rounded-full border-primary/20 bg-primary/5 text-primary text-xs font-bold uppercase tracking-widest">
-                <Zap className="mr-2 h-3.5 w-3.5 fill-primary" />
+            <div className="max-w-4xl mx-auto text-center">
+              <Badge variant="secondary" className="mb-6 px-4 py-1.5 text-sm font-medium">
+                <Zap className="mr-2 h-4 w-4 text-primary fill-primary" />
                 The #1 Tender Management Platform in Southern Africa
               </Badge>
-              <h1 className="text-5xl md:text-8xl font-black tracking-tighter leading-[0.9] text-slate-900 dark:text-white">
-                Win More Contracts <br className="hidden md:block" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-600 dark:from-primary dark:to-cyan-400">
-                  With Intelligent Tracking
-                </span>
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-8 bg-clip-text text-transparent bg-gradient-to-b from-slate-900 to-slate-600 dark:from-white dark:to-slate-400">
+                Win More Contracts with Intelligent Tender Tracking
               </h1>
-              <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed font-medium">
+              <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
                 Stop missing deadlines and losing track of bids. TenderTrack helps you find, track, and win government and private sector tenders with ease.
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                <Button size="lg" className="h-14 px-10 text-lg rounded-full shadow-xl shadow-primary/20 group" asChild>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button size="lg" className="h-14 px-8 text-lg rounded-full shadow-lg" asChild>
                   <Link href="/signup">
                     Start Your Free Trial
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-                <Button size="lg" variant="outline" className="h-14 px-10 text-lg rounded-full border-slate-200 dark:border-slate-800" asChild>
+                <Button size="lg" variant="outline" className="h-14 px-8 text-lg rounded-full" asChild>
                   <Link href="/pricing">View Pricing</Link>
                 </Button>
               </div>
-            </div>
-
-            {/* Product Preview Mockup */}
-            <div className="mt-20 md:mt-32 relative group">
-              <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent blur-[120px] rounded-full -z-10 opacity-50 group-hover:opacity-80 transition-opacity" />
-              <div className="relative mx-auto max-w-6xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm p-2 shadow-2xl animate-float">
-                <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 overflow-hidden shadow-sm">
-                  {/* Mock Browser Header */}
-                  <div className="h-12 border-b bg-slate-50 dark:bg-slate-900/50 flex items-center px-4 gap-2">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-800" />
-                      <div className="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-800" />
-                      <div className="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-800" />
-                    </div>
-                    <div className="mx-auto w-1/3 h-6 bg-slate-100 dark:bg-slate-800 rounded-md" />
-                  </div>
-                  {/* Mock Dashboard Content */}
-                  <div className="p-4 md:p-8 space-y-6 bg-white dark:bg-slate-950">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div className="h-32 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 space-y-2">
-                        <div className="w-1/2 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
-                        <div className="w-2/3 h-8 bg-primary/20 rounded" />
-                      </div>
-                      <div className="h-32 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 space-y-2">
-                        <div className="w-1/2 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
-                        <div className="w-2/3 h-8 bg-blue-500/20 rounded" />
-                      </div>
-                      <div className="h-32 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 space-y-2">
-                        <div className="w-1/2 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
-                        <div className="w-2/3 h-8 bg-green-500/20 rounded" />
-                      </div>
-                    </div>
-                    <div className="h-64 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-6 flex items-end gap-3">
-                        <div className="flex-1 bg-slate-200 dark:bg-slate-800 rounded-t-lg h-[40%]" />
-                        <div className="flex-1 bg-primary/40 rounded-t-lg h-[70%]" />
-                        <div className="flex-1 bg-slate-200 dark:bg-slate-800 rounded-t-lg h-[50%]" />
-                        <div className="flex-1 bg-blue-500/40 rounded-t-lg h-[90%]" />
-                        <div className="flex-1 bg-slate-200 dark:bg-slate-800 rounded-t-lg h-[60%]" />
-                        <div className="flex-1 bg-green-500/40 rounded-t-lg h-[100%]" />
-                    </div>
-                  </div>
+              <div className="mt-12 flex items-center justify-center gap-8 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-500" />
+                  No credit card required
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-500" />
+                  Cancel anytime
                 </div>
               </div>
             </div>
+          </div>
+          
+          {/* Background Decoration */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none opacity-30">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px]" />
+            <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[120px]" />
           </div>
         </section>
 
