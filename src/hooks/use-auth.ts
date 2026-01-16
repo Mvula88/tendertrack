@@ -15,7 +15,7 @@ export function useAuth() {
     const getUser = async () => {
       try {
         const { data: { user }, error } = await supabase.auth.getUser()
-        if (error) {
+        if (error && error.status !== 401 && !error.message.includes('Auth session missing')) {
           console.error('Error fetching user:', error.message)
         }
         setUser(user)
