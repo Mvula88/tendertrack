@@ -43,10 +43,35 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session
-        const userId = session.metadata?.user_id
+        const metadata = session.metadata
+        const userId = metadata?.userId || metadata?.user_id
+        const companyId = metadata?.companyId
+        const type = metadata?.type
+        
         const customerId = session.customer as string
         const subscriptionId = session.subscription as string
 
+        // Handle Credit Top-up
+        if (type === 'credit_topup' && companyId && metadata?.credits) {
+          const creditsToAdd = parseInt(metadata.credits)
+          
+          // Get current credits
+          const { data: company } = await supabaseAdmin
+            .from('user_companies')
+            .select('ai_credits')
+            .eq('id', companyId)
+            .single()
+
+          if (company) {
+            await supabaseAdmin
+              .from('user_companies')
+              .update({ ai_credits: (company.ai_credits || 0) + creditsToAdd })
+              .eq('id', companyId)
+          }
+          break
+        }
+
+        // Handle Subscription
         if (userId && subscriptionId) {
           // Get subscription details
           const subscription = await stripe.subscriptions.retrieve(subscriptionId) as any

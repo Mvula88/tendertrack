@@ -18,6 +18,8 @@ import {
   CreditCard,
   Crown,
   Zap,
+  Plus,
+  Sparkles,
   ExternalLink,
   CheckCircle,
   AlertCircle,
@@ -76,6 +78,7 @@ export default function SettingsPage() {
 
   const [newCategoryName, setNewCategoryName] = useState('')
   const [billingLoading, setBillingLoading] = useState(false)
+  const [topupLoading, setTopupLoading] = useState(false)
 
   const handleCreateCategory = async () => {
     if (!newCategoryName.trim()) return
@@ -116,6 +119,31 @@ export default function SettingsPage() {
       toast.error('Failed to open billing portal')
     } finally {
       setBillingLoading(false)
+    }
+  }
+
+  const handleTopUp = async () => {
+    setTopupLoading(true)
+    try {
+      const response = await fetch('/api/stripe/top-up', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: 10 }),
+      })
+      const { url, error } = await response.json()
+
+      if (error) {
+        toast.error(error)
+        return
+      }
+
+      if (url) {
+        window.location.href = url
+      }
+    } catch (error) {
+      toast.error('Failed to initiate top-up')
+    } finally {
+      setTopupLoading(false)
     }
   }
 
@@ -324,6 +352,48 @@ export default function SettingsPage() {
                   </div>
                 </>
               )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                WhatsApp Notifications
+                <Badge variant="secondary" className="bg-primary/10 text-primary border-none">Beta</Badge>
+              </CardTitle>
+              <CardDescription>
+                Receive urgent tender deadlines directly to your WhatsApp
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <p className="text-sm font-medium">Enable WhatsApp Alerts</p>
+                    <p className="text-sm text-muted-foreground">
+                      We&apos;ll send you a message 24 hours before any bid is due
+                    </p>
+                  </div>
+                  <Switch
+                    checked={false}
+                    disabled
+                  />
+                </div>
+                <div className="space-y-2">
+                  <FormLabel>WhatsApp Number</FormLabel>
+                  <div className="flex gap-2">
+                    <Input 
+                      placeholder="+27 82 123 4567" 
+                      className="max-w-xs"
+                      disabled
+                    />
+                    <Button variant="outline" disabled>Verify Number</Button>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground italic">
+                    WhatsApp integration requires a Pro or Team plan.
+                  </p>
+                </div>
+              </div>
             </CardContent>
           </Card>
         </TabsContent>
@@ -562,6 +632,43 @@ export default function SettingsPage() {
 
             <Card>
               <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                  AI Credits
+                </CardTitle>
+                <CardDescription>
+                  Purchase additional credits for AI tender analysis
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between p-4 rounded-lg border bg-primary/5">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-2xl font-bold">{currentCompany?.ai_credits ?? 0}</span>
+                      <span className="text-sm text-muted-foreground">Available Credits</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      One credit is used for each AI compliance scan.
+                    </p>
+                  </div>
+                  <Button 
+                    onClick={handleTopUp} 
+                    disabled={topupLoading}
+                    variant="default"
+                  >
+                    {topupLoading ? (
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                    ) : (
+                      <Plus className="h-4 w-4 mr-2" />
+                    )}
+                    Buy 10 Credits (R250)
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
                 <CardTitle>Plan Features</CardTitle>
                 <CardDescription>
                   What&apos;s included in your {planDetails.name} plan
@@ -603,6 +710,12 @@ export default function SettingsPage() {
                     <span className="text-sm">Procurement Plans</span>
                     <Badge variant={planDetails.features.procurementPlans ? 'default' : 'secondary'}>
                       {planDetails.features.procurementPlans ? 'Yes' : 'No'}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between py-2">
+                    <span className="text-sm">Monthly AI Credits</span>
+                    <Badge variant="secondary">
+                      {(planDetails.features as any).aiCredits ?? 0}
                     </Badge>
                   </div>
                 </div>

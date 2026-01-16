@@ -41,6 +41,8 @@ export interface Database {
           address: string | null
           logo_url: string | null
           is_active: boolean
+          has_sample_data: boolean
+          ai_credits: number
           created_by: string
           created_at: string
           updated_at: string
@@ -55,6 +57,8 @@ export interface Database {
           address?: string | null
           logo_url?: string | null
           is_active?: boolean
+          has_sample_data?: boolean
+          ai_credits?: number
           created_by: string
           created_at?: string
           updated_at?: string
@@ -69,6 +73,8 @@ export interface Database {
           address?: string | null
           logo_url?: string | null
           is_active?: boolean
+          has_sample_data?: boolean
+          ai_credits?: number
           created_by?: string
           created_at?: string
           updated_at?: string
@@ -296,6 +302,40 @@ export interface Database {
         Relationships: [
           {
             foreignKeyName: 'bid_opening_results_tender_id_fkey'
+            columns: ['tender_id']
+            referencedRelation: 'tenders'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      tender_compliance_reports: {
+        Row: {
+          id: string
+          tender_id: string
+          requirements: Json
+          missing_documents: Json
+          mandatory_checklist: Json
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          tender_id: string
+          requirements: Json
+          missing_documents: Json
+          mandatory_checklist: Json
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          tender_id?: string
+          requirements?: Json
+          missing_documents?: Json
+          mandatory_checklist?: Json
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'tender_compliance_reports_tender_id_fkey'
             columns: ['tender_id']
             referencedRelation: 'tenders'
             referencedColumns: ['id']
@@ -583,3 +623,6 @@ export type TenderWithRelations = Tender & {
 export type UserCompanyWithRole = UserCompany & {
   role: MemberRole
 }
+
+export type TenderComplianceReport = Database['public']['Tables']['tender_compliance_reports']['Row']
+export type TenderComplianceReportInsert = Database['public']['Tables']['tender_compliance_reports']['Insert']

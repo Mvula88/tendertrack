@@ -27,6 +27,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { useCompany } from '@/contexts/company-context'
 import { useTenderStats, useUpcomingDeadlines } from '@/hooks/use-tenders'
 import { TenderStatusChart } from '@/components/dashboard/tender-status-chart'
+import { WelcomeBanner } from '@/components/dashboard/welcome-banner'
 import { cn } from '@/lib/utils'
 
 function formatCurrency(amount: number): string {
@@ -98,6 +99,8 @@ export default function DashboardPage() {
           </Link>
         </div>
       </div>
+
+      <WelcomeBanner />
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">

@@ -57,6 +57,7 @@ import { useOrganizations } from '@/hooks/use-organizations'
 import { TenderDialog } from '@/components/tenders/tender-dialog'
 import { BidOpeningResultDialog } from '@/components/tenders/bid-opening-result-dialog'
 import { BidResultsSection } from '@/components/tenders/bid-results-section'
+import { ComplianceChecker } from '@/components/tenders/compliance-checker'
 import type { TenderStatus } from '@/types/database'
 import { cn } from '@/lib/utils'
 
@@ -352,6 +353,11 @@ export default function TenderDetailPage({
               )}
             </CardContent>
           </Card>
+
+          <ComplianceChecker
+            tenderId={id}
+            documentUrl={tender.document_url}
+          />
 
           {/* Bid Opening Results Section */}
           <BidResultsSection

@@ -9,6 +9,7 @@ export const PLANS = {
       analytics: false,
       competitorTracking: false,
       procurementPlans: false,
+      aiCredits: 0,
     },
   },
   pro: {
@@ -21,6 +22,7 @@ export const PLANS = {
       analytics: true,
       competitorTracking: true,
       procurementPlans: true,
+      aiCredits: 5,
     },
     stripePriceIds: {
       monthly: process.env.STRIPE_PRO_MONTHLY_PRICE_ID,
@@ -39,6 +41,7 @@ export const PLANS = {
       procurementPlans: true,
       apiAccess: true,
       auditLogs: true,
+      aiCredits: 20,
     },
     stripePriceIds: {
       monthly: process.env.STRIPE_TEAM_MONTHLY_PRICE_ID,
