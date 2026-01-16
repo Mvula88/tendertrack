@@ -35,10 +35,7 @@ export default function LandingPage() {
       {/* Header */}
       <header className="border-b bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl sticky top-0 z-50 transition-all">
         <div className="container flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-primary/20">
-              <Layers className="h-5 w-5 text-white" />
-            </div>
+          <Link href="/" className="flex items-center gap-2">
             <Image
               src="/logo.png"
               alt="TenderTrack"
@@ -115,6 +112,51 @@ export default function LandingPage() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 pointer-events-none opacity-30">
             <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px]" />
             <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-[120px]" />
+          </div>
+        </section>
+
+        {/* Product Preview Mockup */}
+        <section className="pb-24 md:pb-32 container relative z-10 -mt-12 md:-mt-20">
+          <div className="relative group">
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent blur-[120px] rounded-full -z-10 opacity-50" />
+            <div className="relative mx-auto max-w-6xl rounded-2xl border border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm p-2 shadow-2xl animate-float">
+              <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 overflow-hidden shadow-sm">
+                {/* Mock Browser Header */}
+                <div className="h-12 border-b bg-slate-50 dark:bg-slate-900/50 flex items-center px-4 gap-2">
+                  <div className="flex gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-800" />
+                    <div className="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-800" />
+                    <div className="w-3 h-3 rounded-full bg-slate-200 dark:bg-slate-800" />
+                  </div>
+                  <div className="mx-auto w-1/3 h-6 bg-slate-100 dark:bg-slate-800 rounded-md" />
+                </div>
+                {/* Mock Dashboard Content */}
+                <div className="p-4 md:p-8 space-y-6 bg-white dark:bg-slate-950">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="h-32 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 space-y-2">
+                      <div className="w-1/2 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
+                      <div className="w-2/3 h-8 bg-primary/20 rounded" />
+                    </div>
+                    <div className="h-32 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 space-y-2">
+                      <div className="w-1/2 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
+                      <div className="w-2/3 h-8 bg-blue-500/20 rounded" />
+                    </div>
+                    <div className="h-32 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-4 space-y-2">
+                      <div className="w-1/2 h-4 bg-slate-200 dark:bg-slate-800 rounded" />
+                      <div className="w-2/3 h-8 bg-green-500/20 rounded" />
+                    </div>
+                  </div>
+                  <div className="h-64 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-6 flex items-end gap-3">
+                      <div className="flex-1 bg-slate-200 dark:bg-slate-800 rounded-t-lg h-[40%]" />
+                      <div className="flex-1 bg-primary/40 rounded-t-lg h-[70%]" />
+                      <div className="flex-1 bg-slate-200 dark:bg-slate-800 rounded-t-lg h-[50%]" />
+                      <div className="flex-1 bg-blue-500/40 rounded-t-lg h-[90%]" />
+                      <div className="flex-1 bg-slate-200 dark:bg-slate-800 rounded-t-lg h-[60%]" />
+                      <div className="flex-1 bg-green-500/40 rounded-t-lg h-[100%]" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -313,10 +355,7 @@ export default function LandingPage() {
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-16 mb-20">
             <div className="md:col-span-5 space-y-8">
-              <Link href="/" className="flex items-center gap-2 group">
-                <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-primary/20">
-                  <Layers className="h-6 w-6 text-white" />
-                </div>
+          <Link href="/" className="flex items-center gap-2">
                 <Image
                   src="/logo.png"
                   alt="TenderTrack"
