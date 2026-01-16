@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
 
         if (userId && subscriptionId) {
           // Get subscription details
-          const subscription = await stripe.subscriptions.retrieve(subscriptionId)
+          const subscription = await stripe.subscriptions.retrieve(subscriptionId) as any
           const priceId = subscription.items.data[0]?.price.id
           const plan = getPlanFromPriceId(priceId)
 
@@ -74,7 +74,7 @@ export async function POST(request: NextRequest) {
       }
 
       case 'customer.subscription.updated': {
-        const subscription = event.data.object as Stripe.Subscription
+        const subscription = event.data.object as any
         const userId = subscription.metadata?.user_id
         const priceId = subscription.items.data[0]?.price.id
         const plan = getPlanFromPriceId(priceId)
@@ -97,7 +97,7 @@ export async function POST(request: NextRequest) {
       }
 
       case 'customer.subscription.deleted': {
-        const subscription = event.data.object as Stripe.Subscription
+        const subscription = event.data.object as any
 
         await supabaseAdmin
           .from('subscriptions')
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
       }
 
       case 'invoice.payment_succeeded': {
-        const invoice = event.data.object as Stripe.Invoice
+        const invoice = event.data.object as any
         const subscriptionId = invoice.subscription as string
 
         if (subscriptionId) {
@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
       }
 
       case 'invoice.payment_failed': {
-        const invoice = event.data.object as Stripe.Invoice
+        const invoice = event.data.object as any
         const subscriptionId = invoice.subscription as string
 
         if (subscriptionId) {

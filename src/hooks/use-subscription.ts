@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useAuth } from './use-auth'
 import { PLANS, PlanType } from '@/lib/stripe'
 
-export interface Subscription {
+export interface SubscriptionData {
   id: string
   user_id: string
   stripe_customer_id: string | null
@@ -26,7 +26,7 @@ export function useSubscription() {
 
   return useQuery({
     queryKey: ['subscription', user?.id],
-    queryFn: async (): Promise<Subscription | null> => {
+    queryFn: async (): Promise<SubscriptionData | null> => {
       if (!user) return null
 
       const { data, error } = await supabase

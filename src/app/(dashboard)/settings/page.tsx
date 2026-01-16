@@ -49,7 +49,7 @@ import { useAuth } from '@/hooks/use-auth'
 import { useCategories, useCreateCategory, useDeleteCategory } from '@/hooks/use-categories'
 import { useCompany } from '@/contexts/company-context'
 import { useNotificationPreferences } from '@/hooks/use-preferences'
-import { useSubscription } from '@/hooks/use-subscription'
+import { useSubscription, SubscriptionData } from '@/hooks/use-subscription'
 import { PLANS } from '@/lib/stripe'
 import { Skeleton } from '@/components/ui/skeleton'
 import {

@@ -564,9 +564,9 @@ export type ProcurementPlanInsert = Database['public']['Tables']['procurement_pl
 export type Reminder = Database['public']['Tables']['reminders']['Row']
 export type ReminderInsert = Database['public']['Tables']['reminders']['Insert']
 
-export type Subscription = Database['public']['Tables']['subscriptions']['Row']
-export type SubscriptionInsert = Database['public']['Tables']['subscriptions']['Insert']
-export type SubscriptionUpdate = Database['public']['Tables']['subscriptions']['Update']
+export type DbSubscription = Database['public']['Tables']['subscriptions']['Row']
+export type DbSubscriptionInsert = Database['public']['Tables']['subscriptions']['Insert']
+export type DbSubscriptionUpdate = Database['public']['Tables']['subscriptions']['Update']
 
 // Extended types with relations
 export type TenderWithRelations = Tender & {
