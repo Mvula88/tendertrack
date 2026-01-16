@@ -291,26 +291,28 @@ export default function TenderDetailPage({
                     <p className="text-sm font-medium">
                       {format(new Date(tender.due_date), 'PPP')}
                     </p>
-                    <p
-                      className={cn(
-                        'text-xs',
-                        isOverdue
-                          ? 'text-red-600'
-                          : daysUntilDue <= 3
-                          ? 'text-orange-600'
-                          : daysUntilDue <= 7
-                          ? 'text-yellow-600'
-                          : 'text-muted-foreground'
-                      )}
-                    >
-                      {isOverdue
-                        ? `${Math.abs(daysUntilDue)} days overdue`
-                        : daysUntilDue === 0
-                        ? 'Due today!'
-                        : daysUntilDue === 1
-                        ? 'Due tomorrow'
-                        : `${daysUntilDue} days remaining`}
-                    </p>
+                    {!['won', 'lost', 'abandoned', 'submitted', 'under_evaluation', 'bid_opening'].includes(tender.status) && (
+                      <p
+                        className={cn(
+                          'text-xs',
+                          isOverdue
+                            ? 'text-red-600'
+                            : daysUntilDue <= 3
+                            ? 'text-orange-600'
+                            : daysUntilDue <= 7
+                            ? 'text-yellow-600'
+                            : 'text-muted-foreground'
+                        )}
+                      >
+                        {isOverdue
+                          ? `${Math.abs(daysUntilDue)} days overdue`
+                          : daysUntilDue === 0
+                          ? 'Due today!'
+                          : daysUntilDue === 1
+                          ? 'Due tomorrow'
+                          : `${daysUntilDue} days remaining`}
+                      </p>
+                    )}
                   </div>
                 </div>
 

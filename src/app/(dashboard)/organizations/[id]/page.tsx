@@ -242,6 +242,7 @@ export default function OrganizationDetailPage({
                           new Date(tender.due_date),
                           new Date()
                         )
+                        const isCompleted = ['won', 'lost', 'abandoned', 'submitted', 'under_evaluation', 'bid_opening'].includes(tender.status)
                         return (
                           <TableRow key={tender.id}>
                             <TableCell>
@@ -256,22 +257,24 @@ export default function OrganizationDetailPage({
                               <div className="text-sm">
                                 {format(new Date(tender.due_date), 'dd MMM yyyy')}
                               </div>
-                              <div
-                                className={cn(
-                                  'text-xs',
-                                  daysLeft < 0
-                                    ? 'text-red-600'
-                                    : daysLeft <= 3
-                                    ? 'text-orange-600'
-                                    : 'text-muted-foreground'
-                                )}
-                              >
-                                {daysLeft < 0
-                                  ? `${Math.abs(daysLeft)}d overdue`
-                                  : daysLeft === 0
-                                  ? 'Today'
-                                  : `${daysLeft}d left`}
-                              </div>
+                              {!isCompleted && (
+                                <div
+                                  className={cn(
+                                    'text-xs',
+                                    daysLeft < 0
+                                      ? 'text-red-600'
+                                      : daysLeft <= 3
+                                      ? 'text-orange-600'
+                                      : 'text-muted-foreground'
+                                  )}
+                                >
+                                  {daysLeft < 0
+                                    ? `${Math.abs(daysLeft)}d overdue`
+                                    : daysLeft === 0
+                                    ? 'Today'
+                                    : `${daysLeft}d left`}
+                                </div>
+                              )}
                             </TableCell>
                             <TableCell>
                               <Badge variant={statusConfig[tender.status].variant}>

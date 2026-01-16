@@ -85,7 +85,7 @@ const statusConfig: Record<TenderStatus, { label: string; variant: 'default' | '
 }
 
 function getUrgencyClass(dueDate: string, status: TenderStatus): string {
-  if (['won', 'lost', 'abandoned'].includes(status)) return ''
+  if (['won', 'lost', 'abandoned', 'submitted', 'under_evaluation', 'bid_opening'].includes(status)) return ''
 
   const days = differenceInDays(new Date(dueDate), new Date())
   if (days < 0) return 'bg-red-50 dark:bg-red-900/10'
@@ -95,7 +95,11 @@ function getUrgencyClass(dueDate: string, status: TenderStatus): string {
   return ''
 }
 
-function getDaysLabel(dueDate: string): { label: string; className: string } {
+function getDaysLabel(dueDate: string, status: TenderStatus): { label: string; className: string } {
+  if (['won', 'lost', 'abandoned', 'submitted', 'under_evaluation', 'bid_opening'].includes(status)) {
+    return { label: '', className: '' }
+  }
+
   const days = differenceInDays(new Date(dueDate), new Date())
   if (days < 0) return { label: `${Math.abs(days)}d overdue`, className: 'text-red-600' }
   if (days === 0) return { label: 'Today', className: 'text-red-600 font-bold' }
@@ -329,7 +333,7 @@ export default function TendersPage() {
                 </TableHeader>
                 <TableBody>
                   {filteredTenders.map((tender) => {
-                    const daysInfo = getDaysLabel(tender.due_date)
+                    const daysInfo = getDaysLabel(tender.due_date, tender.status)
                     return (
                       <TableRow
                         key={tender.id}
