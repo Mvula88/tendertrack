@@ -34,6 +34,10 @@ export default function OnboardingPage() {
   const supabase = createClient()
   const { refreshCompanies } = useCompany()
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   const {
     register,
     handleSubmit,
@@ -42,12 +46,12 @@ export default function OnboardingPage() {
     resolver: zodResolver(companySchema),
   })
 
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
   if (!mounted) {
-    return null
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-900 dark:to-slate-800">
+        <div className="animate-pulse text-muted-foreground">Loading...</div>
+      </div>
+    )
   }
 
   const onSubmit = async (data: CompanyFormData) => {
