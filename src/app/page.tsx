@@ -17,7 +17,10 @@ import {
   Calendar,
   Layers,
   TrendingUp,
-  Globe
+  Globe,
+  ShieldCheck,
+  MessageSquare,
+  Sparkles
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -199,58 +202,58 @@ export default function LandingPage() {
                 <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-0" />
               </div>
 
-              {/* Feature 2: Reminders */}
-              <div className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 hover:border-blue-500/50 transition-colors">
-                <div className="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6">
-                  <Bell className="h-6 w-6 text-blue-500" />
+              {/* Feature 2: AI Compliance */}
+              <div className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 hover:border-primary/50 transition-colors">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
+                  <ShieldCheck className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Smart Reminders</h3>
+                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">AI Compliance Officer</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-                  Automated email and in-app notifications for submission deadlines and bid openings.
+                  Scan tender PDFs to identify mandatory SBD forms and missing documents instantly.
                 </p>
               </div>
 
-              {/* Feature 3: Competitor */}
-              <div className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 hover:border-yellow-500/50 transition-colors">
+              {/* Feature 3: WhatsApp */}
+              <div className="md:col-span-4 md:row-span-1 group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 hover:border-green-500/50 transition-colors">
+                <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center mb-6">
+                  <MessageSquare className="h-6 w-6 text-green-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">WhatsApp Alerts</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                  Receive urgent deadline reminders directly to your phone. Never miss a submission.
+                </p>
+              </div>
+
+              {/* Feature 4: Competitor */}
+              <div className="md:col-span-4 group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 hover:border-yellow-500/50 transition-colors">
                 <div className="w-12 h-12 bg-yellow-500/10 rounded-xl flex items-center justify-center mb-6">
                   <BarChart3 className="h-6 w-6 text-yellow-500" />
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Competitor Intelligence</h3>
+                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Market Intelligence</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-                  Analyze bid opening results and rivals' pricing to stay ahead of the competition.
+                  Analyze bid opening results and rival pricing to stay ahead of the competition.
                 </p>
               </div>
 
-              {/* Feature 4: Docs */}
-              <div className="md:col-span-4 group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 hover:border-green-500/50 transition-colors">
-                 <div className="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center mb-6">
-                  <FileText className="h-6 w-6 text-green-500" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Secure Docs</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-                  Store documents and award letters in one central, secure location for your entire team.
-                </p>
-              </div>
-
-              {/* Feature 5: Team */}
-              <div className="md:col-span-4 group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 hover:border-purple-500/50 transition-colors">
-                 <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6">
-                  <Users className="h-6 w-6 text-purple-500" />
-                </div>
-                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Collaboration</h3>
-                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-                  Assign tenders to team members, set roles and permissions, and track progress together.
-                </p>
-              </div>
-
-              {/* Feature 6: Analytics */}
+              {/* Feature 5: Analytics */}
               <div className="md:col-span-4 group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 hover:border-red-500/50 transition-colors">
                  <div className="w-12 h-12 bg-red-500/10 rounded-xl flex items-center justify-center mb-6">
                   <TrendingUp className="h-6 w-6 text-red-500" />
                 </div>
-                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Win Rate Analytics</h3>
+                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Win Rate Insights</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
-                  Visualize your performance with powerful dashboards. Track your pipeline value.
+                  Visualize your performance with powerful dashboards and track your pipeline.
+                </p>
+              </div>
+
+              {/* Feature 6: Collaboration */}
+              <div className="md:col-span-4 group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 hover:border-purple-500/50 transition-colors">
+                 <div className="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6">
+                  <Users className="h-6 w-6 text-purple-500" />
+                </div>
+                <h3 className="text-xl font-bold mb-2 text-slate-900 dark:text-white">Team Collaboration</h3>
+                <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed font-medium">
+                  Assign tenders to team members and track progress together in real-time.
                 </p>
               </div>
             </div>
