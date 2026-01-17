@@ -29,6 +29,7 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import {
   Card,
@@ -470,7 +471,7 @@ export default function SettingsPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <FormLabel>WhatsApp Number</FormLabel>
+                  <Label>WhatsApp Number</Label>
                   <div className="flex gap-2">
                     <Input 
                       placeholder="+27 82 123 4567" 
