@@ -87,38 +87,41 @@ export function Header() {
   const closeMobileMenu = () => setMobileMenuOpen(false)
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white dark:bg-slate-900 shadow-sm">
-      <div className="container flex h-16 items-center">
-        <div className="mr-4 flex">
-          <Link href="/dashboard" className="mr-6 flex items-center">
+    <header className="sticky top-0 z-50 w-full border-b bg-white/95 dark:bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:supports-[backdrop-filter]:bg-slate-900/80">
+      <div className="container flex h-14 max-w-screen-2xl items-center px-4 sm:px-6 lg:px-8">
+        {/* Logo */}
+        <div className="mr-6 flex items-center">
+          <Link href="/dashboard" className="flex items-center space-x-2">
             <Image
               src="/logo.png"
-              alt="TrackTender"
-              width={120}
-              height={32}
-              className="h-8 w-auto dark:invert"
+              alt="TenderTrack"
+              width={140}
+              height={36}
+              className="h-7 w-auto dark:invert"
               priority
             />
           </Link>
         </div>
 
-        <div className="hidden md:flex items-center space-x-1">
+        {/* Navigation */}
+        <nav className="hidden md:flex items-center space-x-1 text-sm font-medium">
           {navigation.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                'px-3 py-2 rounded-md transition-colors',
                 pathname === item.href || pathname.startsWith(item.href + '/')
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                  ? 'text-foreground bg-accent'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
               )}
             >
               {item.name}
             </Link>
           ))}
-        </div>
+        </nav>
 
+        {/* Right side items */}
         <div className="flex flex-1 items-center justify-end space-x-2">
           <div className="hidden sm:block">
             <CompanySwitcher />

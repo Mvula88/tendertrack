@@ -17,6 +17,7 @@ import {
   Zap,
   ArrowUpCircle,
   CreditCard,
+  ClipboardList,
 } from 'lucide-react'
 import {
   Card,
@@ -86,28 +87,28 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Page Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">
-            Welcome back! Here&apos;s what&apos;s happening with your tenders.
+          <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Overview of your tender pipeline and activities
           </p>
         </div>
         <div className="flex gap-2">
-          <Link href="/tenders/new">
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Tender
-            </Button>
-          </Link>
-          <Link href="/organizations/new">
-            <Button variant="outline">
+          <Button asChild size="sm" variant="outline">
+            <Link href="/organizations/new">
               <Building className="mr-2 h-4 w-4" />
               Add Organization
-            </Button>
-          </Link>
+            </Link>
+          </Button>
+          <Button asChild size="sm">
+            <Link href="/tenders/new">
+              <Plus className="mr-2 h-4 w-4" />
+              Add Tender
+            </Link>
+          </Button>
         </div>
       </div>
 
@@ -115,18 +116,20 @@ export default function DashboardPage() {
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Tenders</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Active Tenders</CardTitle>
+            <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/20">
+              <FileText className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            </div>
           </CardHeader>
           <CardContent>
             {statsLoading ? (
               <Skeleton className="h-8 w-20" />
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats?.totalActive ?? 0}</div>
-                <p className="text-xs text-muted-foreground">
+                <div className="text-2xl font-semibold">{stats?.totalActive ?? 0}</div>
+                <p className="text-xs text-muted-foreground mt-1">
                   {stats?.total ?? 0} total tenders
                 </p>
               </>
@@ -134,18 +137,20 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Submitted Bids</CardTitle>
-            <Send className="h-4 w-4 text-muted-foreground" />
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Submitted Bids</CardTitle>
+            <div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/20">
+              <Send className="h-4 w-4 text-green-600 dark:text-green-400" />
+            </div>
           </CardHeader>
           <CardContent>
             {statsLoading ? (
               <Skeleton className="h-8 w-20" />
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats?.submitted ?? 0}</div>
-                <p className="text-xs text-muted-foreground">
+                <div className="text-2xl font-semibold">{stats?.submitted ?? 0}</div>
+                <p className="text-xs text-muted-foreground mt-1">
                   Awaiting results
                 </p>
               </>
@@ -153,18 +158,20 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Win Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Win Rate</CardTitle>
+            <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/20">
+              <TrendingUp className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+            </div>
           </CardHeader>
           <CardContent>
             {statsLoading ? (
               <Skeleton className="h-8 w-20" />
             ) : (
               <>
-                <div className="text-2xl font-bold">{stats?.winRate ?? 0}%</div>
-                <p className="text-xs text-muted-foreground">
+                <div className="text-2xl font-semibold">{stats?.winRate ?? 0}%</div>
+                <p className="text-xs text-muted-foreground mt-1">
                   Based on completed tenders
                 </p>
               </>
@@ -172,20 +179,22 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pipeline Value</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+        <Card className="hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">Pipeline Value</CardTitle>
+            <div className="p-2 rounded-lg bg-amber-100 dark:bg-amber-900/20">
+              <DollarSign className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+            </div>
           </CardHeader>
           <CardContent>
             {statsLoading ? (
               <Skeleton className="h-8 w-20" />
             ) : (
               <>
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-semibold">
                   {formatCurrency(stats?.pipelineValue ?? 0)}
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground mt-1">
                   Active bid amounts
                 </p>
               </>
@@ -195,97 +204,111 @@ export default function DashboardPage() {
       </div>
 
       {/* AI Credits & Plan Card - Prominent Placement */}
-      <Card className="border-primary/50 bg-gradient-to-br from-primary/5 to-primary/10">
-        <CardHeader>
+      <Card className="border-blue-200 dark:border-blue-800/30 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-950/10 dark:to-indigo-950/10 hover:shadow-md transition-all">
+        <CardHeader className="pb-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
-              <CardTitle>AI Features & Credits</CardTitle>
+              <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                <Sparkles className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div>
+                <CardTitle className="text-base">AI Features & Credits</CardTitle>
+                <CardDescription className="text-xs mt-0.5">
+                  Generate proposals, parse plans, check compliance
+                </CardDescription>
+              </div>
             </div>
-            <Badge variant={currentPlan === 'free' ? 'secondary' : currentPlan === 'pro' ? 'default' : 'destructive'}>
-              {planDetails.name} Plan
+            <Badge variant={currentPlan === 'free' ? 'secondary' : currentPlan === 'pro' ? 'default' : 'destructive'} className="text-xs">
+              {planDetails.name}
             </Badge>
           </div>
-          <CardDescription>
-            Use AI to generate proposals, parse procurement plans, and check compliance
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-4 bg-background/50 rounded-lg">
+            {/* Credits Display */}
+            <div className="flex items-center justify-between p-4 bg-white/60 dark:bg-slate-900/30 rounded-lg border border-border/50">
               <div className="flex items-center gap-3">
                 <div className={cn(
-                  'p-3 rounded-full',
-                  aiCredits === 0 ? 'bg-destructive/10' : 
-                  aiCredits < 5 ? 'bg-amber-500/10' : 
-                  'bg-primary/10'
+                  'p-2.5 rounded-full',
+                  aiCredits === 0 ? 'bg-red-100 dark:bg-red-900/20' : 
+                  aiCredits < 5 ? 'bg-amber-100 dark:bg-amber-900/20' : 
+                  'bg-blue-100 dark:bg-blue-900/20'
                 )}>
                   <Zap className={cn(
-                    'h-6 w-6',
-                    aiCredits === 0 ? 'text-destructive' : 
-                    aiCredits < 5 ? 'text-amber-500' : 
-                    'text-primary'
+                    'h-5 w-5',
+                    aiCredits === 0 ? 'text-red-600 dark:text-red-400' : 
+                    aiCredits < 5 ? 'text-amber-600 dark:text-amber-400' : 
+                    'text-blue-600 dark:text-blue-400'
                   )} />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">{aiCredits}</p>
-                  <p className="text-sm text-muted-foreground">AI Credits Remaining</p>
+                  <p className="text-2xl font-semibold leading-none">{aiCredits}</p>
+                  <p className="text-xs text-muted-foreground mt-1">AI Credits Remaining</p>
                 </div>
               </div>
               <div className="flex flex-col gap-2">
                 {aiCredits < 5 && (
-                  <Link href="/settings?tab=billing">
-                    <Button size="sm" variant="default">
-                      <ArrowUpCircle className="h-4 w-4 mr-2" />
-                      Top Up Credits
-                    </Button>
-                  </Link>
+                  <Button asChild size="sm" variant="default" className="bg-blue-600 hover:bg-blue-700">
+                    <Link href="/settings?tab=billing">
+                      <ArrowUpCircle className="h-3.5 w-3.5 mr-1.5" />
+                      Top Up
+                    </Link>
+                  </Button>
                 )}
                 {currentPlan === 'free' && (
-                  <Link href="/settings?tab=billing">
-                    <Button size="sm" variant="outline">
-                      <CreditCard className="h-4 w-4 mr-2" />
-                      Upgrade Plan
-                    </Button>
-                  </Link>
+                  <Button asChild size="sm" variant="outline">
+                    <Link href="/settings?tab=billing">
+                      <CreditCard className="h-3.5 w-3.5 mr-1.5" />
+                      Upgrade
+                    </Link>
+                  </Button>
                 )}
               </div>
             </div>
             
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {/* AI Feature Cards */}
+            <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">
               <Link href="/tenders" className="group">
-                <div className="flex items-center gap-3 p-3 rounded-lg border bg-background/50 hover:bg-accent transition-colors">
-                  <FileText className="h-5 w-5 text-primary" />
-                  <div>
-                    <p className="text-sm font-medium group-hover:text-primary transition-colors">Generate Proposal</p>
-                    <p className="text-xs text-muted-foreground">AI-powered bids</p>
+                <div className="flex items-start gap-3 p-3 rounded-lg border border-border/50 bg-white/40 dark:bg-slate-900/20 hover:bg-white dark:hover:bg-slate-900/40 hover:border-blue-200 dark:hover:border-blue-800 transition-all">
+                  <div className="p-1.5 rounded-md bg-blue-100 dark:bg-blue-900/30 group-hover:bg-blue-200 dark:group-hover:bg-blue-900/50 transition-colors">
+                    <FileText className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Generate Proposal</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">AI-powered bids</p>
                   </div>
                 </div>
               </Link>
               <Link href="/procurement-plans" className="group">
-                <div className="flex items-center gap-3 p-3 rounded-lg border bg-background/50 hover:bg-accent transition-colors">
-                  <FileText className="h-5 w-5 text-primary" />
-                  <div>
-                    <p className="text-sm font-medium group-hover:text-primary transition-colors">Parse PDF Plans</p>
-                    <p className="text-xs text-muted-foreground">Extract tender data</p>
+                <div className="flex items-start gap-3 p-3 rounded-lg border border-border/50 bg-white/40 dark:bg-slate-900/20 hover:bg-white dark:hover:bg-slate-900/40 hover:border-blue-200 dark:hover:border-blue-800 transition-all">
+                  <div className="p-1.5 rounded-md bg-blue-100 dark:bg-blue-900/30 group-hover:bg-blue-200 dark:group-hover:bg-blue-900/50 transition-colors">
+                    <ClipboardList className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Parse PDF Plans</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Extract tender data</p>
                   </div>
                 </div>
               </Link>
               <Link href="/tenders" className="group">
-                <div className="flex items-center gap-3 p-3 rounded-lg border bg-background/50 hover:bg-accent transition-colors">
-                  <Sparkles className="h-5 w-5 text-primary" />
-                  <div>
-                    <p className="text-sm font-medium group-hover:text-primary transition-colors">Compliance Check</p>
-                    <p className="text-xs text-muted-foreground">Verify requirements</p>
+                <div className="flex items-start gap-3 p-3 rounded-lg border border-border/50 bg-white/40 dark:bg-slate-900/20 hover:bg-white dark:hover:bg-slate-900/40 hover:border-blue-200 dark:hover:border-blue-800 transition-all">
+                  <div className="p-1.5 rounded-md bg-blue-100 dark:bg-blue-900/30 group-hover:bg-blue-200 dark:group-hover:bg-blue-900/50 transition-colors">
+                    <Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">Compliance Check</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Verify requirements</p>
                   </div>
                 </div>
               </Link>
               <Link href="/settings?tab=profile" className="group">
-                <div className="flex items-center gap-3 p-3 rounded-lg border bg-background/50 hover:bg-accent transition-colors">
-                  <Building className="h-5 w-5 text-primary" />
-                  <div>
-                    <p className="text-sm font-medium group-hover:text-primary transition-colors">AI Profile</p>
-                    <p className="text-xs text-muted-foreground">Company context</p>
+                <div className="flex items-start gap-3 p-3 rounded-lg border border-border/50 bg-white/40 dark:bg-slate-900/20 hover:bg-white dark:hover:bg-slate-900/40 hover:border-blue-200 dark:hover:border-blue-800 transition-all">
+                  <div className="p-1.5 rounded-md bg-blue-100 dark:bg-blue-900/30 group-hover:bg-blue-200 dark:group-hover:bg-blue-900/50 transition-colors">
+                    <Building className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">AI Profile</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Company context</p>
                   </div>
                 </div>
               </Link>
