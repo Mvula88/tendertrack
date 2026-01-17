@@ -19,6 +19,11 @@ import {
   Users,
   ClipboardList,
   BarChart3,
+  Sparkles,
+  Zap,
+  ChevronDown,
+  CreditCard,
+  ArrowUpCircle,
 } from 'lucide-react'
 import { useTheme } from 'next-themes'
 
@@ -44,6 +49,10 @@ import { Separator } from '@/components/ui/separator'
 import { CompanySwitcher } from './company-switcher'
 import { useAuth } from '@/hooks/use-auth'
 import { usePendingReminders } from '@/hooks/use-reminders'
+import { useSubscription } from '@/hooks/use-subscription'
+import { useCompany } from '@/contexts/company-context'
+import { PLANS } from '@/lib/stripe'
+import { Badge } from '@/components/ui/badge'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -63,6 +72,13 @@ export function Header() {
   // Get pending reminders for notification badge
   const { data: pendingReminders } = usePendingReminders()
   const notificationCount = pendingReminders?.length || 0
+
+  // Get subscription and AI credits data
+  const { data: subscription } = useSubscription()
+  const { currentCompany } = useCompany()
+  const currentPlan = subscription?.plan || 'free'
+  const planDetails = PLANS[currentPlan]
+  const aiCredits = currentCompany?.ai_credits || 0
 
   const getInitials = (email: string) => {
     return email?.substring(0, 2).toUpperCase() || 'U'
@@ -107,6 +123,96 @@ export function Header() {
           <div className="hidden sm:block">
             <CompanySwitcher />
           </div>
+
+          {/* Plan Badge */}
+          <Link href="/settings?tab=billing" className="hidden lg:block">
+            <Badge
+              variant={currentPlan === 'free' ? 'secondary' : currentPlan === 'pro' ? 'default' : 'destructive'}
+              className="cursor-pointer hover:opacity-80 transition-opacity px-3 py-1.5"
+            >
+              {planDetails.name}
+            </Badge>
+          </Link>
+
+          {/* AI Credits Indicator */}
+          <div className="hidden lg:flex items-center gap-2">
+            <Link href="/settings?tab=billing" className="flex items-center gap-1.5 px-3 py-1.5 rounded-md hover:bg-accent transition-colors">
+              <Zap className={`h-4 w-4 ${
+                aiCredits === 0 ? 'text-destructive' : 
+                aiCredits < 5 ? 'text-amber-500' : 
+                'text-primary'
+              }`} />
+              <span className="text-sm font-medium">
+                {aiCredits} {aiCredits === 1 ? 'Credit' : 'Credits'}
+              </span>
+            </Link>
+            {aiCredits < 5 && (
+              <Button asChild size="sm" variant="outline" className="h-8">
+                <Link href="/settings?tab=billing">
+                  <ArrowUpCircle className="h-3.5 w-3.5 mr-1" />
+                  Top Up
+                </Link>
+              </Button>
+            )}
+          </div>
+
+          {/* AI Quick Access Menu */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="relative">
+                <Sparkles className="h-5 w-5 text-primary" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-64">
+              <DropdownMenuLabel className="flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                AI Features
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href="/tenders" className="cursor-pointer">
+                  <FileText className="mr-2 h-4 w-4" />
+                  Generate Proposal
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/procurement-plans" className="cursor-pointer">
+                  <ClipboardList className="mr-2 h-4 w-4" />
+                  Upload Procurement Plan
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/tenders" className="cursor-pointer">
+                  <BarChart3 className="mr-2 h-4 w-4" />
+                  AI Compliance Checker
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/settings?tab=profile" className="cursor-pointer">
+                  <Building2 className="mr-2 h-4 w-4" />
+                  Company AI Profile
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <div className="px-2 py-2 text-xs text-muted-foreground">
+                <div className="flex items-center justify-between mb-1">
+                  <span>AI Credits:</span>
+                  <span className="font-medium text-foreground">{aiCredits}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Plan:</span>
+                  <Badge variant="outline" className="text-xs">{planDetails.name}</Badge>
+                </div>
+              </div>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href="/settings?tab=billing" className="cursor-pointer text-primary">
+                  <CreditCard className="mr-2 h-4 w-4" />
+                  Manage Billing & Credits
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -228,6 +334,67 @@ export function Header() {
               <div className="mt-6 flex flex-col gap-4">
                 <div className="sm:hidden">
                   <CompanySwitcher />
+                </div>
+                <Separator />
+                {/* Mobile Plan & Credits Info */}
+                <div className="flex flex-col gap-3 px-3 py-3 bg-accent/50 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Current Plan:</span>
+                    <Badge variant={currentPlan === 'free' ? 'secondary' : currentPlan === 'pro' ? 'default' : 'destructive'}>
+                      {planDetails.name}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">AI Credits:</span>
+                    <div className="flex items-center gap-1.5">
+                      <Zap className={`h-4 w-4 ${
+                        aiCredits === 0 ? 'text-destructive' : 
+                        aiCredits < 5 ? 'text-amber-500' : 
+                        'text-primary'
+                      }`} />
+                      <span className="text-sm font-medium">{aiCredits}</span>
+                    </div>
+                  </div>
+                  {(currentPlan === 'free' || aiCredits < 5) && (
+                    <Button asChild size="sm" variant="default" className="w-full mt-1">
+                      <Link href="/settings?tab=billing" onClick={closeMobileMenu}>
+                        <CreditCard className="h-3.5 w-3.5 mr-1.5" />
+                        {currentPlan === 'free' ? 'Upgrade Plan' : 'Top Up Credits'}
+                      </Link>
+                    </Button>
+                  )}
+                </div>
+                <Separator />
+                {/* AI Features Quick Access */}
+                <div className="flex flex-col gap-1">
+                  <div className="px-3 py-2 text-xs font-semibold text-muted-foreground flex items-center gap-2">
+                    <Sparkles className="h-3.5 w-3.5 text-primary" />
+                    AI FEATURES
+                  </div>
+                  <Link
+                    href="/tenders"
+                    onClick={closeMobileMenu}
+                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <FileText className="h-5 w-5" />
+                    Generate Proposal
+                  </Link>
+                  <Link
+                    href="/procurement-plans"
+                    onClick={closeMobileMenu}
+                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <ClipboardList className="h-5 w-5" />
+                    Upload Procurement Plan
+                  </Link>
+                  <Link
+                    href="/settings?tab=profile"
+                    onClick={closeMobileMenu}
+                    className="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                  >
+                    <Building2 className="h-5 w-5" />
+                    Company AI Profile
+                  </Link>
                 </div>
                 <Separator />
                 <nav className="flex flex-col gap-2">

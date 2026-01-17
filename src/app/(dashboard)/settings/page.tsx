@@ -3,11 +3,12 @@
 import { useState } from 'react'
 import { useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { toast } from 'sonner'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   User,
   Bell,
@@ -70,11 +71,13 @@ import {
 
 export default function SettingsPage() {
   const { user, signOut, isLoading: authLoading } = useAuth()
-  const { currentCompany } = useCompany()
+  const { currentCompany, refreshCompanies } = useCompany()
   const { data: categories, isLoading: categoriesLoading } = useCategories()
   const createCategory = useCreateCategory()
   const deleteCategory = useDeleteCategory()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const queryClient = useQueryClient()
   const { preferences, setPreference, isLoaded: preferencesLoaded } = useNotificationPreferences()
   const { data: subscription, isLoading: subscriptionLoading } = useSubscription()
 
@@ -109,6 +112,33 @@ export default function SettingsPage() {
 
     loadCompanyProfile()
   }, [currentCompany])
+
+  // Handle successful Stripe redirect - invalidate queries to refresh data
+  useEffect(() => {
+    const success = searchParams.get('success')
+    const canceled = searchParams.get('canceled')
+    
+    if (success === 'true') {
+      // Invalidate subscription query to fetch updated data
+      queryClient.invalidateQueries({ queryKey: ['subscription'] })
+      // Refresh company data to get updated AI credits
+      refreshCompanies()
+      
+      toast.success('Payment successful! Your account has been updated.')
+      
+      // Clean up URL
+      const newUrl = new URL(window.location.href)
+      newUrl.searchParams.delete('success')
+      window.history.replaceState({}, '', newUrl.toString())
+    } else if (canceled === 'true') {
+      toast.info('Payment was canceled.')
+      
+      // Clean up URL
+      const newUrl = new URL(window.location.href)
+      newUrl.searchParams.delete('canceled')
+      window.history.replaceState({}, '', newUrl.toString())
+    }
+  }, [searchParams, queryClient, refreshCompanies])
 
   const handleCreateCategory = async () => {
     if (!newCategoryName.trim()) return

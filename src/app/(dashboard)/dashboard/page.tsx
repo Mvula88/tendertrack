@@ -13,6 +13,10 @@ import {
   ArrowRight,
   Clock,
   AlertCircle,
+  Sparkles,
+  Zap,
+  ArrowUpCircle,
+  CreditCard,
 } from 'lucide-react'
 import {
   Card,
@@ -26,6 +30,8 @@ import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
 import { useCompany } from '@/contexts/company-context'
 import { useTenderStats, useUpcomingDeadlines } from '@/hooks/use-tenders'
+import { useSubscription } from '@/hooks/use-subscription'
+import { PLANS } from '@/lib/stripe'
 import { TenderStatusChart } from '@/components/dashboard/tender-status-chart'
 import { WelcomeBanner } from '@/components/dashboard/welcome-banner'
 import { cn } from '@/lib/utils'
@@ -51,6 +57,11 @@ export default function DashboardPage() {
   const { currentCompany, isLoading: companyLoading } = useCompany()
   const { data: stats, isLoading: statsLoading } = useTenderStats()
   const { data: upcomingDeadlines, isLoading: deadlinesLoading } = useUpcomingDeadlines()
+  const { data: subscription } = useSubscription()
+  
+  const currentPlan = subscription?.plan || 'free'
+  const planDetails = PLANS[currentPlan]
+  const aiCredits = currentCompany?.ai_credits || 0
 
   if (companyLoading) {
     return <DashboardSkeleton />
@@ -182,6 +193,106 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* AI Credits & Plan Card - Prominent Placement */}
+      <Card className="border-primary/50 bg-gradient-to-br from-primary/5 to-primary/10">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary" />
+              <CardTitle>AI Features & Credits</CardTitle>
+            </div>
+            <Badge variant={currentPlan === 'free' ? 'secondary' : currentPlan === 'pro' ? 'default' : 'destructive'}>
+              {planDetails.name} Plan
+            </Badge>
+          </div>
+          <CardDescription>
+            Use AI to generate proposals, parse procurement plans, and check compliance
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-background/50 rounded-lg">
+              <div className="flex items-center gap-3">
+                <div className={cn(
+                  'p-3 rounded-full',
+                  aiCredits === 0 ? 'bg-destructive/10' : 
+                  aiCredits < 5 ? 'bg-amber-500/10' : 
+                  'bg-primary/10'
+                )}>
+                  <Zap className={cn(
+                    'h-6 w-6',
+                    aiCredits === 0 ? 'text-destructive' : 
+                    aiCredits < 5 ? 'text-amber-500' : 
+                    'text-primary'
+                  )} />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold">{aiCredits}</p>
+                  <p className="text-sm text-muted-foreground">AI Credits Remaining</p>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                {aiCredits < 5 && (
+                  <Link href="/settings?tab=billing">
+                    <Button size="sm" variant="default">
+                      <ArrowUpCircle className="h-4 w-4 mr-2" />
+                      Top Up Credits
+                    </Button>
+                  </Link>
+                )}
+                {currentPlan === 'free' && (
+                  <Link href="/settings?tab=billing">
+                    <Button size="sm" variant="outline">
+                      <CreditCard className="h-4 w-4 mr-2" />
+                      Upgrade Plan
+                    </Button>
+                  </Link>
+                )}
+              </div>
+            </div>
+            
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              <Link href="/tenders" className="group">
+                <div className="flex items-center gap-3 p-3 rounded-lg border bg-background/50 hover:bg-accent transition-colors">
+                  <FileText className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="text-sm font-medium group-hover:text-primary transition-colors">Generate Proposal</p>
+                    <p className="text-xs text-muted-foreground">AI-powered bids</p>
+                  </div>
+                </div>
+              </Link>
+              <Link href="/procurement-plans" className="group">
+                <div className="flex items-center gap-3 p-3 rounded-lg border bg-background/50 hover:bg-accent transition-colors">
+                  <FileText className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="text-sm font-medium group-hover:text-primary transition-colors">Parse PDF Plans</p>
+                    <p className="text-xs text-muted-foreground">Extract tender data</p>
+                  </div>
+                </div>
+              </Link>
+              <Link href="/tenders" className="group">
+                <div className="flex items-center gap-3 p-3 rounded-lg border bg-background/50 hover:bg-accent transition-colors">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="text-sm font-medium group-hover:text-primary transition-colors">Compliance Check</p>
+                    <p className="text-xs text-muted-foreground">Verify requirements</p>
+                  </div>
+                </div>
+              </Link>
+              <Link href="/settings?tab=profile" className="group">
+                <div className="flex items-center gap-3 p-3 rounded-lg border bg-background/50 hover:bg-accent transition-colors">
+                  <Building className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="text-sm font-medium group-hover:text-primary transition-colors">AI Profile</p>
+                    <p className="text-xs text-muted-foreground">Company context</p>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Charts and Upcoming Deadlines */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
