@@ -16,6 +16,9 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { createClient } from '@/lib/supabase/client'
 import { useCompany } from '@/contexts/company-context'
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 const companySchema = z.object({
   name: z.string().min(2, 'Company name must be at least 2 characters'),
   registration_number: z.string().optional(),

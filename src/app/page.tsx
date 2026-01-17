@@ -28,6 +28,9 @@ import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 import { useAuth } from '@/hooks/use-auth'
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export default function LandingPage() {
   const [mounted, setMounted] = useState(false)
   const { user } = useAuth()
