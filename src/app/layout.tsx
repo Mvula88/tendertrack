@@ -6,6 +6,9 @@ import { Toaster } from '@/components/ui/sonner'
 
 const inter = Inter({ subsets: ['latin'] })
 
+// Disable static generation for all pages
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'TrackTender - Tender Management',
   description: 'Professional tool for tracking government tenders, managing bids, and gaining competitive intelligence',

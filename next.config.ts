@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
   },
   // Exclude canvas-dependent packages from bundling
   serverExternalPackages: ['canvas', 'pdf-parse'],
+  // Disable static optimization for all pages to prevent SSR issues
+  output: 'standalone',
 }
 
 export default nextConfig
