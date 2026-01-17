@@ -1,5 +1,3 @@
-const pdf = require('pdf-parse')
-
 export interface ParsedTenderOpportunity {
   title: string
   description?: string
@@ -10,6 +8,8 @@ export interface ParsedTenderOpportunity {
 
 export async function parseProcurementPDF(buffer: Buffer): Promise<ParsedTenderOpportunity[]> {
   try {
+    // Dynamic import to avoid build-time issues with canvas
+    const pdf = require('pdf-parse')
     const data = await pdf(buffer)
     const text = data.text
 

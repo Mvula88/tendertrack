@@ -16,6 +16,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Exclude canvas-dependent packages from bundling
+  serverExternalPackages: ['canvas', 'pdf-parse'],
 }
 
 export default nextConfig

@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
-import { parseProcurementPDF } from '@/lib/pdf-parser'
 import { NextResponse } from 'next/server'
+import type { ParsedTenderOpportunity } from '@/lib/pdf-parser'
 
 export async function POST(request: Request) {
   const supabase = await createClient()
@@ -24,7 +24,8 @@ export async function POST(request: Request) {
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // 2. Parse PDF
+    // 2. Parse PDF using dynamic import
+    const { parseProcurementPDF } = await import('@/lib/pdf-parser')
     const parsedOpportunities = await parseProcurementPDF(buffer)
 
     // 3. Upload original file to Supabase Storage
