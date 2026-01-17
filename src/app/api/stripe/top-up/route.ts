@@ -41,8 +41,8 @@ export async function POST(request: Request) {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings?success=true`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/settings?canceled=true`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings?success=true&tab=billing`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/settings?canceled=true&tab=billing`,
       customer_email: user.email,
       metadata: {
         userId: user.id,
