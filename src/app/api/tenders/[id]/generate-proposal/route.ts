@@ -3,10 +3,10 @@ import { createClient } from '@/lib/supabase/server'
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = createClient()
+    const supabase = await createClient()
 
     // 1. Verify authentication
     const { data: { user }, error: authError } = await supabase.auth.getUser()
@@ -14,7 +14,7 @@ export async function POST(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const tenderId = params.id
+    const { id: tenderId } = await params
 
     // 2. Fetch tender details with organization
     const { data: tender, error: tenderError } = await supabase
@@ -34,7 +34,7 @@ export async function POST(
     // 3. Fetch company profile (for AI context)
     const { data: company, error: companyError } = await supabase
       .from('user_companies')
-      .select('name, company_history, core_services, bee_level, ai_credits')
+      .select('id, name, company_history, core_services, bee_level, ai_credits')
       .eq('id', tender.user_company_id)
       .single()
 
