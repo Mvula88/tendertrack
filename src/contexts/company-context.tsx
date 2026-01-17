@@ -52,6 +52,10 @@ export function CompanyProvider({ children }: { children: React.ReactNode }) {
             is_active,
             has_sample_data,
             ai_credits,
+            company_history,
+            core_services,
+            bee_level,
+            reference_projects,
             created_by,
             created_at,
             updated_at

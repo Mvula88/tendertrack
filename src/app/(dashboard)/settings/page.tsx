@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -47,6 +48,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
+import { Textarea } from '@/components/ui/textarea'
 import { useAuth } from '@/hooks/use-auth'
 import { useCategories, useCreateCategory, useDeleteCategory } from '@/hooks/use-categories'
 import { useCompany } from '@/contexts/company-context'
@@ -79,6 +81,34 @@ export default function SettingsPage() {
   const [newCategoryName, setNewCategoryName] = useState('')
   const [billingLoading, setBillingLoading] = useState(false)
   const [topupLoading, setTopupLoading] = useState(false)
+  const [companyHistory, setCompanyHistory] = useState('')
+  const [coreServices, setCoreServices] = useState('')
+  const [beeLevel, setBeeLevel] = useState('')
+  const [profileSaving, setProfileSaving] = useState(false)
+
+  // Load current company profile data
+  useEffect(() => {
+    const loadCompanyProfile = async () => {
+      if (!currentCompany) return
+
+      const { createClient } = await import('@/lib/supabase/client')
+      const supabase = createClient()
+
+      const { data, error } = await supabase
+        .from('user_companies')
+        .select('company_history, core_services, bee_level')
+        .eq('id', currentCompany.id)
+        .single()
+
+      if (data && !error) {
+        setCompanyHistory(data.company_history || '')
+        setCoreServices(data.core_services?.join(', ') || '')
+        setBeeLevel(data.bee_level?.toString() || '')
+      }
+    }
+
+    loadCompanyProfile()
+  }, [currentCompany])
 
   const handleCreateCategory = async () => {
     if (!newCategoryName.trim()) return
@@ -147,6 +177,32 @@ export default function SettingsPage() {
     }
   }
 
+  const handleSaveCompanyProfile = async () => {
+    if (!currentCompany) return
+    setProfileSaving(true)
+    try {
+      const { createClient } = await import('@/lib/supabase/client')
+      const supabase = createClient()
+
+      const { error } = await supabase
+        .from('user_companies')
+        .update({
+          company_history: companyHistory,
+          core_services: coreServices.split(',').map(s => s.trim()),
+          bee_level: beeLevel ? parseInt(beeLevel) : null
+        })
+        .eq('id', currentCompany.id)
+
+      if (error) throw error
+
+      toast.success('Company profile updated successfully')
+    } catch (error) {
+      toast.error('Failed to update company profile')
+    } finally {
+      setProfileSaving(false)
+    }
+  }
+
   const currentPlan = subscription?.plan || 'free'
   const planDetails = PLANS[currentPlan]
 
@@ -181,6 +237,10 @@ export default function SettingsPage() {
           <TabsTrigger value="billing">
             <CreditCard className="h-4 w-4 mr-2" />
             Billing
+          </TabsTrigger>
+          <TabsTrigger value="company">
+            <Building className="h-4 w-4 mr-2" />
+            Company Profile
           </TabsTrigger>
         </TabsList>
 
@@ -362,7 +422,7 @@ export default function SettingsPage() {
                 <Badge variant="secondary" className="bg-primary/10 text-primary border-none">Beta</Badge>
               </CardTitle>
               <CardDescription>
-                Receive urgent tender deadlines directly to your WhatsApp
+                Receive urgent tender deadlines directly to your WhatsApp via Clickatell
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -749,6 +809,86 @@ export default function SettingsPage() {
               </Card>
             )}
           </div>
+        </TabsContent>
+
+        {/* Company Profile Tab */}
+        <TabsContent value="company">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-primary" />
+                AI Ghost Writer Profile
+              </CardTitle>
+              <CardDescription>
+                Help our AI write better tender submissions by telling it about your company
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <FormLabel>Company History & Experience</FormLabel>
+                <Textarea
+                  placeholder="Describe your company's background, years in business, major achievements, and areas of expertise..."
+                  value={companyHistory}
+                  onChange={(e) => setCompanyHistory(e.target.value)}
+                  rows={5}
+                  className="resize-none"
+                />
+                <p className="text-xs text-muted-foreground">
+                  This helps the AI understand your company's story and credibility.
+                </p>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-2">
+                <FormLabel>Core Services/Products</FormLabel>
+                <Input
+                  placeholder="e.g., IT Consulting, Web Development, Infrastructure"
+                  value={coreServices}
+                  onChange={(e) => setCoreServices(e.target.value)}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Comma-separated list of services your company provides.
+                </p>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-2">
+                <FormLabel>BEE Level</FormLabel>
+                <Input
+                  type="number"
+                  min="1"
+                  max="8"
+                  placeholder="1-8"
+                  value={beeLevel}
+                  onChange={(e) => setBeeLevel(e.target.value)}
+                  className="max-w-[100px]"
+                />
+                <p className="text-xs text-muted-foreground">
+                  Your company's B-BBEE contributor level (1 is highest).
+                </p>
+              </div>
+
+              <Separator />
+
+              <div className="flex items-center gap-3 p-4 rounded-lg bg-primary/5 border border-primary/20">
+                <AlertCircle className="h-5 w-5 text-primary" />
+                <p className="text-sm text-muted-foreground">
+                  This information is stored securely and only used to generate tender proposals. The more detail you provide, the better the AI can write on your behalf.
+                </p>
+              </div>
+
+              <Button onClick={handleSaveCompanyProfile} disabled={profileSaving}>
+                {profileSaving ? (
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                ) : (
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                )}
+                Save Company Profile
+              </Button>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>

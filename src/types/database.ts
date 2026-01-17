@@ -43,6 +43,10 @@ export interface Database {
           is_active: boolean
           has_sample_data: boolean
           ai_credits: number
+          company_history: string | null
+          core_services: string[] | null
+          bee_level: number | null
+          reference_projects: Json
           created_by: string
           created_at: string
           updated_at: string
@@ -59,6 +63,10 @@ export interface Database {
           is_active?: boolean
           has_sample_data?: boolean
           ai_credits?: number
+          company_history?: string | null
+          core_services?: string[] | null
+          bee_level?: number | null
+          reference_projects?: Json
           created_by: string
           created_at?: string
           updated_at?: string
@@ -75,6 +83,10 @@ export interface Database {
           is_active?: boolean
           has_sample_data?: boolean
           ai_credits?: number
+          company_history?: string | null
+          core_services?: string[] | null
+          bee_level?: number | null
+          reference_projects?: Json
           created_by?: string
           created_at?: string
           updated_at?: string
@@ -468,6 +480,46 @@ export interface Database {
           }
         ]
       }
+      procurement_opportunities: {
+        Row: {
+          id: string
+          plan_id: string
+          title: string
+          description: string | null
+          estimated_value: number | null
+          closing_date: string | null
+          category: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          plan_id: string
+          title: string
+          description?: string | null
+          estimated_value?: number | null
+          closing_date?: string | null
+          category?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          plan_id?: string
+          title?: string
+          description?: string | null
+          estimated_value?: number | null
+          closing_date?: string | null
+          category?: string | null
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'procurement_opportunities_plan_id_fkey'
+            columns: ['plan_id']
+            referencedRelation: 'procurement_plans'
+            referencedColumns: ['id']
+          }
+        ]
+      }
       reminders: {
         Row: {
           id: string
@@ -605,6 +657,9 @@ export type CompetitiveBidInsert = Database['public']['Tables']['competitive_bid
 
 export type ProcurementPlan = Database['public']['Tables']['procurement_plans']['Row']
 export type ProcurementPlanInsert = Database['public']['Tables']['procurement_plans']['Insert']
+
+export type ProcurementOpportunity = Database['public']['Tables']['procurement_opportunities']['Row']
+export type ProcurementOpportunityInsert = Database['public']['Tables']['procurement_opportunities']['Insert']
 
 export type Reminder = Database['public']['Tables']['reminders']['Row']
 export type ReminderInsert = Database['public']['Tables']['reminders']['Insert']

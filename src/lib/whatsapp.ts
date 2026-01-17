@@ -11,58 +11,53 @@ interface SendWhatsAppOptions {
   templateVars?: Record<string, string>
 }
 
-export async function sendWhatsAppMessage({ to, message, templateName, templateVars }: SendWhatsAppOptions) {
-  // 1. Validate phone number (should be in E.164 format, e.g., +27...)
-  const formattedTo = to.startsWith('+') ? to : `+${to}`
+export async function sendWhatsAppMessage({ to, message }: SendWhatsAppOptions) {
+  // 1. Validate phone number (should be in E.164 format, e.g., 27...)
+  const formattedTo = to.replace(/[^0-9]/g, '')
   
-  console.log(`[WhatsApp] Preparing to send message to ${formattedTo}`)
+  console.log(`[WhatsApp] Preparing to send via Clickatell to ${formattedTo}`)
 
-  // 2. Check for API configuration
-  const accountSid = process.env.TWILIO_ACCOUNT_SID
-  const authToken = process.env.TWILIO_AUTH_TOKEN
-  const fromNumber = process.env.TWILIO_WHATSAPP_FROM // e.g., whatsapp:+14155238886
+  // 2. Check for Clickatell API configuration
+  const apiKey = process.env.CLICKATELL_API_KEY
 
-  if (!accountSid || !authToken || !fromNumber) {
-    console.warn('[WhatsApp] API credentials not configured. Message logged but not sent.')
-    return { success: false, error: 'API_NOT_CONFIGURED', message: 'Credentials missing' }
+  if (!apiKey) {
+    console.warn('[WhatsApp] Clickatell API Key not configured. Message logged but not sent.')
+    return { success: false, error: 'API_NOT_CONFIGURED', message: 'API Key missing' }
   }
 
   try {
-    // Note: In a production environment with twilio installed, you would use:
-    // const client = require('twilio')(accountSid, authToken);
-    // await client.messages.create({ from: fromNumber, to: `whatsapp:${formattedTo}`, body: message });
-
-    // Using fetch to stay dependency-light for now
-    const auth = Buffer.from(`${accountSid}:${authToken}`).toString('base64')
-    
-    const params = new URLSearchParams()
-    params.append('To', `whatsapp:${formattedTo}`)
-    params.append('From', fromNumber)
-    params.append('Body', message)
-
     const response = await fetch(
-      `https://api.twilio.com/2010-04-01/Accounts/${accountSid}/Messages.json`,
+      `https://platform.clickatell.com/v1/message`,
       {
         method: 'POST',
         headers: {
-          'Authorization': `Basic ${auth}`,
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Authorization': apiKey,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: params.toString()
+        body: JSON.stringify({
+          messages: [
+            {
+              channel: 'whatsapp',
+              to: formattedTo,
+              content: message
+            }
+          ]
+        })
       }
     )
 
     const result = await response.json()
 
     if (!response.ok) {
-      throw new Error(result.message || 'Twilio API error')
+      throw new Error(result.messages?.[0]?.errorDescription || 'Clickatell API error')
     }
 
-    console.log(`[WhatsApp] Message sent successfully: ${result.sid}`)
-    return { success: true, sid: result.sid }
+    console.log(`[WhatsApp] Message sent successfully via Clickatell`)
+    return { success: true, sid: result.messages?.[0]?.apiMessageId }
 
   } catch (error: any) {
-    console.error('[WhatsApp] Failed to send message:', error.message)
+    console.error('[WhatsApp] Clickatell Error:', error.message)
     return { success: false, error: 'SEND_FAILED', message: error.message }
   }
 }

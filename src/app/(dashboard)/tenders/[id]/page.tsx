@@ -21,6 +21,8 @@ import {
   Users,
   TrendingDown,
   TrendingUp,
+  Sparkles,
+  Loader2,
 } from 'lucide-react'
 import {
   Card,
@@ -60,6 +62,7 @@ import { BidResultsSection } from '@/components/tenders/bid-results-section'
 import { ComplianceChecker } from '@/components/tenders/compliance-checker'
 import type { TenderStatus } from '@/types/database'
 import { cn } from '@/lib/utils'
+import { toast } from 'sonner'
 
 const statusConfig: Record<TenderStatus, { label: string; color: string; icon: React.ElementType }> = {
   identified: { label: 'Identified', color: 'bg-slate-100 text-slate-800', icon: FileText },
@@ -98,6 +101,8 @@ export default function TenderDetailPage({
   const [editDialogOpen, setEditDialogOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [bidResultDialogOpen, setBidResultDialogOpen] = useState(false)
+  const [generatingProposal, setGeneratingProposal] = useState(false)
+  const [generatedProposal, setGeneratedProposal] = useState<string | null>(null)
 
   const handleDelete = async () => {
     await deleteTender.mutateAsync(id)
@@ -119,6 +124,28 @@ export default function TenderDetailPage({
       id: tender.id,
       status,
     })
+  }
+
+  const handleGenerateProposal = async () => {
+    setGeneratingProposal(true)
+    try {
+      const response = await fetch(`/api/tenders/${id}/generate-proposal`, {
+        method: 'POST',
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to generate proposal')
+      }
+
+      setGeneratedProposal(data.proposal)
+      toast.success(`Proposal generated! ${data.creditsRemaining} credits remaining`)
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to generate proposal')
+    } finally {
+      setGeneratingProposal(false)
+    }
   }
 
   if (isLoading) {
@@ -359,6 +386,40 @@ export default function TenderDetailPage({
             documentUrl={tender.document_url}
           />
 
+          {/* AI Generated Proposal */}
+          {generatedProposal && (
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                    AI Generated Proposal
+                  </CardTitle>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      navigator.clipboard.writeText(generatedProposal)
+                      toast.success('Proposal copied to clipboard')
+                    }}
+                  >
+                    Copy to Clipboard
+                  </Button>
+                </div>
+                <CardDescription>
+                  This proposal was generated based on your company profile and tender requirements. Please review and customize as needed.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="prose prose-sm max-w-none">
+                  <div className="p-4 rounded-lg bg-muted/30 border whitespace-pre-wrap font-mono text-sm">
+                    {generatedProposal}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Bid Opening Results Section */}
           <BidResultsSection
             tenderId={id}
@@ -376,6 +437,24 @@ export default function TenderDetailPage({
               <CardTitle className="text-base">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2">
+              <Button
+                className="w-full justify-start"
+                variant="default"
+                onClick={handleGenerateProposal}
+                disabled={generatingProposal}
+              >
+                {generatingProposal ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    Generate AI Proposal
+                  </>
+                )}
+              </Button>
               <Button
                 className="w-full justify-start"
                 variant="outline"

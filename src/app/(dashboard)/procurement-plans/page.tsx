@@ -14,6 +14,10 @@ import {
   Calendar,
   Building2,
   ExternalLink,
+  ChevronDown,
+  ChevronRight,
+  Sparkles,
+  DollarSign,
 } from 'lucide-react'
 import {
   Card,
@@ -62,7 +66,186 @@ import {
 import { useCompany } from '@/contexts/company-context'
 import { useProcurementPlans, useDeleteProcurementPlan } from '@/hooks/use-procurement-plans'
 import { useOrganizations } from '@/hooks/use-organizations'
+import { useOpportunities } from '@/hooks/use-opportunities'
 import { ProcurementPlanDialog } from '@/components/procurement-plans/procurement-plan-dialog'
+
+function PlanRow({ plan, onDelete, expanded, onToggleExpand }: {
+  plan: any
+  onDelete: (id: string) => void
+  expanded: boolean
+  onToggleExpand: () => void
+}) {
+  const { data: opportunities, isLoading } = useOpportunities(plan.id)
+  const hasOpportunities = (opportunities?.length ?? 0) > 0
+
+  return (
+    <>
+      <TableRow className="group">
+        <TableCell>
+          <div className="flex items-center gap-2">
+            {hasOpportunities && (
+              <button
+                onClick={onToggleExpand}
+                className="p-1 hover:bg-muted rounded transition-colors"
+              >
+                {expanded ? (
+                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                ) : (
+                  <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                )}
+              </button>
+            )}
+            <Building2 className="h-4 w-4 text-muted-foreground" />
+            <Link
+              href={`/organizations/${plan.organization_id}`}
+              className="font-medium hover:underline"
+            >
+              {plan.organization.name}
+            </Link>
+            {hasOpportunities && (
+              <Badge variant="secondary" className="ml-2 bg-primary/10 text-primary border-none">
+                <Sparkles className="h-3 w-3 mr-1" />
+                {opportunities?.length ?? 0} opportunities
+              </Badge>
+            )}
+          </div>
+        </TableCell>
+        <TableCell>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary">
+              <Calendar className="h-3 w-3 mr-1" />
+              {plan.fiscal_year}
+            </Badge>
+            {(plan.revision_number ?? 0) > 0 && (
+              <Badge variant="outline" className="text-xs">
+                Rev {plan.revision_number}
+              </Badge>
+            )}
+          </div>
+        </TableCell>
+        <TableCell className="text-muted-foreground">
+          {format(new Date(plan.upload_date), 'MMM d, yyyy')}
+        </TableCell>
+        <TableCell className="max-w-[200px] truncate text-muted-foreground">
+          {plan.notes || '-'}
+        </TableCell>
+        <TableCell>
+          {plan.file_url ? (
+            <a
+              href={plan.file_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center text-primary hover:underline"
+            >
+              <Download className="h-4 w-4 mr-1" />
+              Download
+            </a>
+          ) : (
+            <span className="text-muted-foreground">No file</span>
+          )}
+        </TableCell>
+        <TableCell>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8">
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href={`/organizations/${plan.organization_id}`}>
+                  <Eye className="mr-2 h-4 w-4" />
+                  View Organization
+                </Link>
+              </DropdownMenuItem>
+              {plan.file_url && (
+                <DropdownMenuItem asChild>
+                  <a
+                    href={plan.file_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    Open Document
+                  </a>
+                </DropdownMenuItem>
+              )}
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => onDelete(plan.id)}
+                className="text-destructive focus:text-destructive"
+              >
+                <Trash2 className="mr-2 h-4 w-4" />
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </TableCell>
+      </TableRow>
+
+      {/* Expanded Opportunities */}
+      {expanded && hasOpportunities && (
+        <TableRow>
+          <TableCell colSpan={6} className="bg-muted/30 p-0">
+            <div className="p-6 space-y-4">
+              <h4 className="font-semibold text-sm flex items-center gap-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                Extracted Opportunities ({opportunities?.length ?? 0})
+              </h4>
+              <div className="grid gap-3">
+                {opportunities?.map((opp) => (
+                  <div
+                    key={opp.id}
+                    className="bg-background border rounded-lg p-4 hover:border-primary/50 transition-colors"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <h5 className="font-medium text-sm mb-1">{opp.title}</h5>
+                        {opp.description && (
+                          <p className="text-xs text-muted-foreground mb-2 line-clamp-2">
+                            {opp.description}
+                          </p>
+                        )}
+                        <div className="flex flex-wrap items-center gap-2 mt-2">
+                          {opp.category && (
+                            <Badge variant="outline" className="text-xs">
+                              {opp.category}
+                            </Badge>
+                          )}
+                          {opp.estimated_value && (
+                            <Badge variant="secondary" className="text-xs">
+                              <DollarSign className="h-3 w-3 mr-0.5" />
+                              {new Intl.NumberFormat('en-ZA', {
+                                style: 'currency',
+                                currency: 'ZAR',
+                                notation: 'compact',
+                              }).format(opp.estimated_value)}
+                            </Badge>
+                          )}
+                          {opp.closing_date && (
+                            <Badge variant="secondary" className="text-xs">
+                              <Calendar className="h-3 w-3 mr-0.5" />
+                              {format(new Date(opp.closing_date), 'MMM d, yyyy')}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                      <Button size="sm" variant="outline" className="ml-4">
+                        Create Tender
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </TableCell>
+        </TableRow>
+      )}
+    </>
+  )
+}
 
 export default function ProcurementPlansPage() {
   const { currentCompany, isLoading: companyLoading } = useCompany()
@@ -76,6 +259,7 @@ export default function ProcurementPlansPage() {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [planToDelete, setPlanToDelete] = useState<string | null>(null)
+  const [expandedPlanId, setExpandedPlanId] = useState<string | null>(null)
 
   // Get unique fiscal years for filtering
   const fiscalYears = [...new Set(plans?.map((p) => p.fiscal_year) ?? [])].sort().reverse()
@@ -228,92 +412,13 @@ export default function ProcurementPlansPage() {
               </TableHeader>
               <TableBody>
                 {filteredPlans.map((plan) => (
-                  <TableRow key={plan.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Building2 className="h-4 w-4 text-muted-foreground" />
-                        <Link
-                          href={`/organizations/${plan.organization_id}`}
-                          className="font-medium hover:underline"
-                        >
-                          {plan.organization.name}
-                        </Link>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="secondary">
-                          <Calendar className="h-3 w-3 mr-1" />
-                          {plan.fiscal_year}
-                        </Badge>
-                        {(plan.revision_number ?? 0) > 0 && (
-                          <Badge variant="outline" className="text-xs">
-                            Rev {plan.revision_number}
-                          </Badge>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {format(new Date(plan.upload_date), 'MMM d, yyyy')}
-                    </TableCell>
-                    <TableCell className="max-w-[200px] truncate text-muted-foreground">
-                      {plan.notes || '-'}
-                    </TableCell>
-                    <TableCell>
-                      {plan.file_url ? (
-                        <a
-                          href={plan.file_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center text-primary hover:underline"
-                        >
-                          <Download className="h-4 w-4 mr-1" />
-                          Download
-                        </a>
-                      ) : (
-                        <span className="text-muted-foreground">No file</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem asChild>
-                            <Link href={`/organizations/${plan.organization_id}`}>
-                              <Eye className="mr-2 h-4 w-4" />
-                              View Organization
-                            </Link>
-                          </DropdownMenuItem>
-                          {plan.file_url && (
-                            <DropdownMenuItem asChild>
-                              <a
-                                href={plan.file_url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <ExternalLink className="mr-2 h-4 w-4" />
-                                Open Document
-                              </a>
-                            </DropdownMenuItem>
-                          )}
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem
-                            onClick={() => handleDelete(plan.id)}
-                            className="text-destructive focus:text-destructive"
-                          >
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
+                  <PlanRow
+                    key={plan.id}
+                    plan={plan}
+                    onDelete={handleDelete}
+                    expanded={expandedPlanId === plan.id}
+                    onToggleExpand={() => setExpandedPlanId(expandedPlanId === plan.id ? null : plan.id)}
+                  />
                 ))}
               </TableBody>
             </Table>

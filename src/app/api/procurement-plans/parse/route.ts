@@ -55,6 +55,22 @@ export async function POST(request: Request) {
 
     if (dbError) throw dbError
 
+    // 5. Save parsed opportunities to database
+    if (parsedOpportunities.length > 0) {
+      const opportunities = parsedOpportunities.map(opp => ({
+        plan_id: plan.id,
+        title: opp.title,
+        description: opp.description,
+        estimated_value: opp.estimatedValue,
+        closing_date: opp.closingDate,
+        category: opp.category
+      }))
+
+      await supabase
+        .from('procurement_opportunities')
+        .insert(opportunities)
+    }
+
     return NextResponse.json({ 
       success: true, 
       planId: plan.id,
