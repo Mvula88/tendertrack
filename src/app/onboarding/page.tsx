@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -28,6 +28,7 @@ const companySchema = z.object({
 type CompanyFormData = z.infer<typeof companySchema>
 
 export default function OnboardingPage() {
+  const [mounted, setMounted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
   const supabase = createClient()
@@ -40,6 +41,14 @@ export default function OnboardingPage() {
   } = useForm<CompanyFormData>({
     resolver: zodResolver(companySchema),
   })
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
 
   const onSubmit = async (data: CompanyFormData) => {
     setIsLoading(true)
