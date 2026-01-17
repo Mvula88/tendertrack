@@ -88,9 +88,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 dark:bg-slate-900/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 dark:supports-[backdrop-filter]:bg-slate-900/80">
-      <div className="container flex h-14 max-w-screen-2xl items-center px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <div className="mr-6 flex items-center">
+      <div className="flex h-14 items-center gap-4 px-4 sm:px-6 lg:px-8">
+        {/* Logo - visible on mobile */}
+        <div className="flex items-center lg:hidden">
           <Link href="/dashboard" className="flex items-center space-x-2">
             <Image
               src="/logo.png"
@@ -102,24 +102,6 @@ export function Header() {
             />
           </Link>
         </div>
-
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center space-x-1 text-sm font-medium">
-          {navigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                'px-3 py-2 rounded-md transition-colors',
-                pathname === item.href || pathname.startsWith(item.href + '/')
-                  ? 'text-foreground bg-accent'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-              )}
-            >
-              {item.name}
-            </Link>
-          ))}
-        </nav>
 
         {/* Right side items */}
         <div className="flex flex-1 items-center justify-end space-x-2">
@@ -326,7 +308,7 @@ export function Header() {
           {/* Mobile Menu */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
+              <Button variant="ghost" size="icon" className="lg:hidden">
                 <Menu className="h-5 w-5" />
               </Button>
             </SheetTrigger>
