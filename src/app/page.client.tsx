@@ -194,26 +194,49 @@ export function LandingPageClient() {
             
             <div className="grid grid-cols-1 md:grid-cols-12 gap-6 auto-rows-[250px] md:auto-rows-[300px]">
               {/* Feature 1: Main */}
-              <div className="md:col-span-8 md:row-span-2 group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 md:p-12 hover:border-primary/50 transition-colors">
+              <div className="md:col-span-8 md:row-span-2 group relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-blue-50 via-indigo-50/50 to-purple-50/30 dark:from-slate-900 dark:via-blue-950/30 dark:to-indigo-950/20 p-8 md:p-12 hover:border-primary/50 transition-colors">
+                {/* Mesh Gradient Background Pattern */}
+                <div className="absolute inset-0 opacity-40 dark:opacity-20" style={{
+                  backgroundImage: `
+                    radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                    radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.1) 0px, transparent 50%),
+                    radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.1) 0px, transparent 50%)
+                  `,
+                  backgroundSize: '100% 100%',
+                  backgroundPosition: '0% 0%'
+                }}></div>
+                
+                {/* Animated Grid Pattern */}
+                <div className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]" style={{
+                  backgroundImage: `
+                    linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px)
+                  `,
+                  backgroundSize: '40px 40px'
+                }}></div>
+
+                {/* Floating Orbs */}
+                <div className="absolute top-10 right-20 w-32 h-32 bg-blue-400/20 dark:bg-blue-500/10 rounded-full blur-2xl animate-pulse" />
+                <div className="absolute bottom-20 right-40 w-40 h-40 bg-indigo-400/20 dark:bg-indigo-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+                <div className="absolute top-40 right-10 w-24 h-24 bg-purple-400/15 dark:bg-purple-500/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }} />
+
                 <div className="relative z-10 h-full flex flex-col">
-                  <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mb-8 shadow-sm">
+                  <div className="w-14 h-14 bg-white/80 dark:bg-slate-900/80 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-blue-500/10">
                     <Search className="h-7 w-7 text-primary" />
                   </div>
                   <h3 className="text-3xl font-bold mb-4 text-slate-900 dark:text-white">Intelligent Tender Discovery</h3>
-                  <p className="text-lg text-slate-500 dark:text-slate-400 leading-relaxed max-w-md">
+                  <p className="text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-md font-medium">
                     Track annual procurement plans from government departments and private organizations. Find opportunities before they are even advertised.
                   </p>
                   <div className="mt-auto pt-8">
                      <div className="flex gap-3">
-                        <div className="px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-900 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Government</div>
-                        <div className="px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-900 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Parastatals</div>
-                        <div className="px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-900 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">Private</div>
+                        <div className="px-4 py-2 rounded-full bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 shadow-sm">Government</div>
+                        <div className="px-4 py-2 rounded-full bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 shadow-sm">Parastatals</div>
+                        <div className="px-4 py-2 rounded-full bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 shadow-sm">Private</div>
                      </div>
                   </div>
                 </div>
-                {/* Abstract Visual Decoration */}
-                <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent -z-0" />
-                <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-0" />
               </div>
 
               {/* Feature 2: AI Compliance */}
