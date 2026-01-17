@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { 
@@ -28,7 +29,16 @@ import { Card, CardContent } from '@/components/ui/card'
 import { useAuth } from '@/hooks/use-auth'
 
 export default function LandingPage() {
+  const [mounted, setMounted] = useState(false)
   const { user } = useAuth()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-950 selection:bg-primary/30">
